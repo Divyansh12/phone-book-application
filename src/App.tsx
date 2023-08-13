@@ -8,6 +8,9 @@ import {
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import GetContacts from "./Components/GetContacts";
+import FavouriteContactContextProvider from './Context/favouriteContacts';
+
+
 // import Form from "./Components/Form";
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -30,11 +33,13 @@ const client = new ApolloClient({
 
 function App() {
   return (
+    <FavouriteContactContextProvider>
     <ApolloProvider client={client}>
       {" "}
       <GetContacts />
       {/* <Form /> */}
     </ApolloProvider>
+    </FavouriteContactContextProvider>
   );
 }
 
