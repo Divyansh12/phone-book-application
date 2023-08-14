@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
-import { LOAD_CONTACTS } from "../GraphQL/Queries/Queries";
 import { useFavourites } from "../Context/favouriteContacts";
 import ContactCard from "./ContactCard";
 import {favoriteContactsContextType, Phone, Contact} from '../models/models'
 
 
-const GetContacts: React.FC = () => {
-  const { error, loading, data } = useQuery(LOAD_CONTACTS);
-  const [contacts, setContacts] = useState<Contact[]>([]);
+const GetFavourites: React.FC = () => {
+//   const { error, loading, data } = useQuery(LOAD_USERS);
+//   const [contacts, setContacts] = useState<Contact[]>([]);
   const { favouriteContacts, addFavourite, removeFavourite } = useFavourites() as favoriteContactsContextType;
 
-  useEffect(() => {
-    if (data) {
-        console.log(data)
-      setContacts(data.contact);
-    }
-  }, [data]);
-
+  
   return (
     <div>
         {/* <h1> Favourite Contacts </h1>
@@ -32,10 +24,10 @@ const GetContacts: React.FC = () => {
       
       <h1>Regular Contact</h1> */}
       
-      {contacts.map((val: Contact) => {
+      {favouriteContacts.map((val: Contact) => {
         //  console.log(typeof( favouriteContacts))
-        //  const isFavourite=false;
-        const isFavourite = favouriteContacts.some((contact) => contact.id === val.id);
+         const isFavourite=true;
+        // const isFavourite = favouriteContacts.some((contact) => contact.id === val.id);
         return <ContactCard
         contact={val}
         isFavourite={isFavourite}
@@ -49,4 +41,4 @@ const GetContacts: React.FC = () => {
   );
 }
 
-export default GetContacts;
+export default GetFavourites;

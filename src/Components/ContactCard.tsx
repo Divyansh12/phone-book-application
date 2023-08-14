@@ -1,11 +1,7 @@
 import React from 'react';
 /** @jsxImportSource @emotion/react */
-
-import { css, Interpolation } from '@emotion/react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-// /** @jsx jsx */
-// import { jsx } from '@emotion/core';
-
 import { Phone, Contact } from '../models/models';
 
 
@@ -25,7 +21,13 @@ interface CardProps {
   removeFromFavourite: (id: string)=> void;
 }
 
-// const cardStyles = ;
+const cardStyles = css`
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  ` ;
 
 const titleStyles = css`
   font-size: 1.5rem;
@@ -60,14 +62,8 @@ const ContactCard: React.FC<CardProps> = ({ contact = {},
     removeFromFavourite, }) => {
         const { id, first_name, last_name, phones } = contact as Contact;
   return (
-    <div css={css`
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  `}>
-      <h2 css={titleStyles}>{first_name + last_name}</h2>
+    <div css={cardStyles}>
+      <h2 css={titleStyles}>{first_name +" " + last_name}</h2>
       <p>{phones.map((val: Phone) => {
         return <div> <h3> {val.number}</h3>
         
