@@ -1,21 +1,40 @@
 import React, { useState } from "react";
 // import { CREATE_CONTACT_MUTATION } from "../GraphQL/Mutations/mutation";
 // import { useMutation } from "@apollo/client";
-import { Phone_Insert_Input, useAddContactWithPhonesMutation } from "../GraphQL/generated/graphql";
+import { Contact, Phone_Insert_Input, useAddContactWithPhonesMutation } from "../GraphQL/generated/graphql";
+import { useContacts } from "../Context/contacts";
+import { ContactsContextType } from "../models/models";
 
 function Form() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
+  const [phone_inputs, setPhoneInputs] = useState<string[]>(['']);
+
+  const handleInputChange = (index: number, value: string) => {
+    console.log(phone_inputs)
+    const newInputs = [...phone_inputs];
+    newInputs[index] = value;
+    setPhoneInputs(newInputs);
+  };
+
+  const handleAddInput = () => {
+    setPhoneInputs([...phone_inputs, '']);
+  };
+
+
+  const {  addContact } = useContacts() as ContactsContextType 
 
 //   const [AddContactWithPhones, { error }] = useMutation(CREATE_CONTACT_MUTATION);
 const [AddContactWithPhones, { error }] = useAddContactWithPhonesMutation()
 
-  const addUser = () => {
-    var phones: Phone_Insert_Input[] =[]
-    var phone_number={number: phone} as Phone_Insert_Input
-    phones.push(phone_number)
-    AddContactWithPhones({
+ const  createContact =  async () => {
+    var phones: Phone_Insert_Input[]=[];
+    phone_inputs.map((val: string) => {
+        var phone_number={number: val} as Phone_Insert_Input;
+        phones.push(phone_number);
+      })
+    const response = await AddContactWithPhones({
       variables: {
         first_name: firstName,
         last_name: lastName,
@@ -23,6 +42,9 @@ const [AddContactWithPhones, { error }] = useAddContactWithPhonesMutation()
       },
     });
 
+    var new_contact=response.data?.insert_contact?.returning[0] as Contact
+    addContact(new_contact)
+    // console.log(response.data?.insert_contact?.returning[0] as Contact)
     if (error) {
       console.log(error);
     }
@@ -43,15 +65,28 @@ const [AddContactWithPhones, { error }] = useAddContactWithPhonesMutation()
           setLastName(e.target.value);
         }}
       />
-      <input
+       <div>
+      {phone_inputs.map((input, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            placeholder="phone number"
+            value={input}
+            onChange={(e) => handleInputChange(index, e.target.value)}
+          />
+        </div>
+      ))}
+      <button onClick={handleAddInput}>Add Phone</button>
+    </div>
+      {/* <input
         type="text"
         placeholder="Phone"
         onChange={(e) => {
           setPhone(e.target.value);
         }}
-      />
+      /> */}
       
-      <button onClick={addUser}> Create Contact</button>
+      <button onClick={createContact}> Create Contact</button>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Contact } from "../models/models";
+// import { Contact } from "../models/models";
+import { Contact } from "../GraphQL/generated/graphql";
 
 
 // const initFavouriteContacts = {
@@ -10,7 +11,7 @@ import { Contact } from "../models/models";
 type favoriteContactsContextType ={
     favouriteContacts: Contact[],
     addFavourite: (contact: Contact) => void
-    removeFavourite: (id: string)=> void
+    removeFavourite: (id: number)=> void
 }
 
 interface Props {
@@ -39,7 +40,7 @@ const FavouriteContactContextProvider: React.FC<Props> = ({children}) => {
 }
     ;
 
-  const removeFavourite = (contactId: string) =>
+  const removeFavourite = (contactId: number) =>
   setfavouriteContacts(prevArray => prevArray.filter(obj => obj.id !== contactId))
 
 

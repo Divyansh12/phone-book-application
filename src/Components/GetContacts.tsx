@@ -3,18 +3,26 @@ import { useQuery, gql } from "@apollo/client";
 import { LOAD_CONTACTS } from "../GraphQL/Queries/Queries";
 import { useFavourites } from "../Context/favouriteContacts";
 import ContactCard from "./ContactCard";
-import {favoriteContactsContextType, Phone, Contact} from '../models/models'
+import {ContactsContextType,favoriteContactsContextType} from '../models/models';
+import {Phone, Contact}from "../GraphQL/generated/graphql";
+
+
+import { useContacts } from "../Context/contacts";
 
 
 const GetContacts: React.FC = () => {
   const { error, loading, data } = useQuery(LOAD_CONTACTS);
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  // const [contacts, setContacts] = useState<Contact[]>([]);
+
+  const { contacts, createContacts } = useContacts() as ContactsContextType 
   const { favouriteContacts, addFavourite, removeFavourite } = useFavourites() as favoriteContactsContextType;
 
   useEffect(() => {
     if (data) {
+        console.log("In Start")
         console.log(data)
-      setContacts(data.contact);
+        console.log(contacts)
+        createContacts(data.contact);
     }
   }, [data]);
 

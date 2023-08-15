@@ -2,7 +2,7 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Phone, Contact } from '../models/models';
+import { Phone, Contact } from "../GraphQL/generated/graphql";;
 
 
 
@@ -18,7 +18,7 @@ interface CardProps {
   contact: Contact;
   isFavourite: boolean;
   addToFavourite: (contact: Contact)=>void;
-  removeFromFavourite: (id: string)=> void;
+  removeFromFavourite: (id: number)=> void;
 }
 
 const cardStyles = css`

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useFavourites } from "../Context/favouriteContacts";
 import ContactCard from "./ContactCard";
-import {favoriteContactsContextType, Phone, Contact} from '../models/models'
-
+import {favoriteContactsContextType} from '../models/models'
+import {Phone, Contact}from "../GraphQL/generated/graphql";
 
 const GetFavourites: React.FC = () => {
 //   const { error, loading, data } = useQuery(LOAD_USERS);
