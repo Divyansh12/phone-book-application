@@ -1235,6 +1235,14 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
+export type AddNumberToContactMutationVariables = Exact<{
+  contact_id: Scalars['Int']['input'];
+  phone_number: Scalars['String']['input'];
+}>;
+
+
+export type AddNumberToContactMutation = { __typename?: 'mutation_root', insert_phone?: { __typename?: 'phone_mutation_response', returning: Array<{ __typename?: 'phone', contact?: { __typename?: 'contact', id: number, last_name: string, first_name: string, phones: Array<{ __typename?: 'phone', number: string }> } | null }> } | null };
+
 export type AddContactWithPhonesMutationVariables = Exact<{
   first_name: Scalars['String']['input'];
   last_name: Scalars['String']['input'];
@@ -1244,7 +1252,96 @@ export type AddContactWithPhonesMutationVariables = Exact<{
 
 export type AddContactWithPhonesMutation = { __typename?: 'mutation_root', insert_contact?: { __typename?: 'contact_mutation_response', returning: Array<{ __typename?: 'contact', first_name: string, last_name: string, id: number, phones: Array<{ __typename?: 'phone', number: string }> }> } | null };
 
+export type DeleteContactMutationMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
 
+
+export type DeleteContactMutationMutation = { __typename?: 'mutation_root', delete_contact_by_pk?: { __typename?: 'contact', first_name: string, last_name: string, id: number } | null };
+
+export type EditContactByIdMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  _set?: InputMaybe<Contact_Set_Input>;
+}>;
+
+
+export type EditContactByIdMutation = { __typename?: 'mutation_root', update_contact_by_pk?: { __typename?: 'contact', id: number, first_name: string, last_name: string, phones: Array<{ __typename?: 'phone', number: string }> } | null };
+
+export type EditPhoneNumberMutationVariables = Exact<{
+  pk_columns: Phone_Pk_Columns_Input;
+  new_phone_number: Scalars['String']['input'];
+}>;
+
+
+export type EditPhoneNumberMutation = { __typename?: 'mutation_root', update_phone_by_pk?: { __typename?: 'phone', contact?: { __typename?: 'contact', id: number, last_name: string, first_name: string, created_at: any, phones: Array<{ __typename?: 'phone', number: string }> } | null } | null };
+
+export type GetContactListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetContactListQuery = { __typename?: 'query_root', contact: Array<{ __typename?: 'contact', created_at: any, first_name: string, id: number, last_name: string, phones: Array<{ __typename?: 'phone', number: string }> }> };
+
+export type GetContactDetailQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type GetContactDetailQuery = { __typename?: 'query_root', contact_by_pk?: { __typename?: 'contact', last_name: string, id: number, first_name: string, created_at: any, phones: Array<{ __typename?: 'phone', number: string }> } | null };
+
+export type GetPhoneListQueryVariables = Exact<{
+  where?: InputMaybe<Phone_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Phone_Select_Column> | Phone_Select_Column>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Phone_Order_By> | Phone_Order_By>;
+}>;
+
+
+export type GetPhoneListQuery = { __typename?: 'query_root', phone: Array<{ __typename?: 'phone', number: string, contact?: { __typename?: 'contact', last_name: string, first_name: string, id: number } | null }> };
+
+
+export const AddNumberToContactDocument = gql`
+    mutation AddNumberToContact($contact_id: Int!, $phone_number: String!) {
+  insert_phone(objects: {contact_id: $contact_id, number: $phone_number}) {
+    returning {
+      contact {
+        id
+        last_name
+        first_name
+        phones {
+          number
+        }
+      }
+    }
+  }
+}
+    `;
+export type AddNumberToContactMutationFn = Apollo.MutationFunction<AddNumberToContactMutation, AddNumberToContactMutationVariables>;
+
+/**
+ * __useAddNumberToContactMutation__
+ *
+ * To run a mutation, you first call `useAddNumberToContactMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddNumberToContactMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addNumberToContactMutation, { data, loading, error }] = useAddNumberToContactMutation({
+ *   variables: {
+ *      contact_id: // value for 'contact_id'
+ *      phone_number: // value for 'phone_number'
+ *   },
+ * });
+ */
+export function useAddNumberToContactMutation(baseOptions?: Apollo.MutationHookOptions<AddNumberToContactMutation, AddNumberToContactMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddNumberToContactMutation, AddNumberToContactMutationVariables>(AddNumberToContactDocument, options);
+      }
+export type AddNumberToContactMutationHookResult = ReturnType<typeof useAddNumberToContactMutation>;
+export type AddNumberToContactMutationResult = Apollo.MutationResult<AddNumberToContactMutation>;
+export type AddNumberToContactMutationOptions = Apollo.BaseMutationOptions<AddNumberToContactMutation, AddNumberToContactMutationVariables>;
 export const AddContactWithPhonesDocument = gql`
     mutation AddContactWithPhones($first_name: String!, $last_name: String!, $phones: [phone_insert_input!]!) {
   insert_contact(
@@ -1289,3 +1386,250 @@ export function useAddContactWithPhonesMutation(baseOptions?: Apollo.MutationHoo
 export type AddContactWithPhonesMutationHookResult = ReturnType<typeof useAddContactWithPhonesMutation>;
 export type AddContactWithPhonesMutationResult = Apollo.MutationResult<AddContactWithPhonesMutation>;
 export type AddContactWithPhonesMutationOptions = Apollo.BaseMutationOptions<AddContactWithPhonesMutation, AddContactWithPhonesMutationVariables>;
+export const DeleteContactMutationDocument = gql`
+    mutation DeleteContactMutation($id: Int!) {
+  delete_contact_by_pk(id: $id) {
+    first_name
+    last_name
+    id
+  }
+}
+    `;
+export type DeleteContactMutationMutationFn = Apollo.MutationFunction<DeleteContactMutationMutation, DeleteContactMutationMutationVariables>;
+
+/**
+ * __useDeleteContactMutationMutation__
+ *
+ * To run a mutation, you first call `useDeleteContactMutationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteContactMutationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteContactMutationMutation, { data, loading, error }] = useDeleteContactMutationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteContactMutationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteContactMutationMutation, DeleteContactMutationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteContactMutationMutation, DeleteContactMutationMutationVariables>(DeleteContactMutationDocument, options);
+      }
+export type DeleteContactMutationMutationHookResult = ReturnType<typeof useDeleteContactMutationMutation>;
+export type DeleteContactMutationMutationResult = Apollo.MutationResult<DeleteContactMutationMutation>;
+export type DeleteContactMutationMutationOptions = Apollo.BaseMutationOptions<DeleteContactMutationMutation, DeleteContactMutationMutationVariables>;
+export const EditContactByIdDocument = gql`
+    mutation EditContactById($id: Int!, $_set: contact_set_input) {
+  update_contact_by_pk(pk_columns: {id: $id}, _set: $_set) {
+    id
+    first_name
+    last_name
+    phones {
+      number
+    }
+  }
+}
+    `;
+export type EditContactByIdMutationFn = Apollo.MutationFunction<EditContactByIdMutation, EditContactByIdMutationVariables>;
+
+/**
+ * __useEditContactByIdMutation__
+ *
+ * To run a mutation, you first call `useEditContactByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditContactByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editContactByIdMutation, { data, loading, error }] = useEditContactByIdMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      _set: // value for '_set'
+ *   },
+ * });
+ */
+export function useEditContactByIdMutation(baseOptions?: Apollo.MutationHookOptions<EditContactByIdMutation, EditContactByIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditContactByIdMutation, EditContactByIdMutationVariables>(EditContactByIdDocument, options);
+      }
+export type EditContactByIdMutationHookResult = ReturnType<typeof useEditContactByIdMutation>;
+export type EditContactByIdMutationResult = Apollo.MutationResult<EditContactByIdMutation>;
+export type EditContactByIdMutationOptions = Apollo.BaseMutationOptions<EditContactByIdMutation, EditContactByIdMutationVariables>;
+export const EditPhoneNumberDocument = gql`
+    mutation EditPhoneNumber($pk_columns: phone_pk_columns_input!, $new_phone_number: String!) {
+  update_phone_by_pk(pk_columns: $pk_columns, _set: {number: $new_phone_number}) {
+    contact {
+      id
+      last_name
+      first_name
+      created_at
+      phones {
+        number
+      }
+    }
+  }
+}
+    `;
+export type EditPhoneNumberMutationFn = Apollo.MutationFunction<EditPhoneNumberMutation, EditPhoneNumberMutationVariables>;
+
+/**
+ * __useEditPhoneNumberMutation__
+ *
+ * To run a mutation, you first call `useEditPhoneNumberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditPhoneNumberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editPhoneNumberMutation, { data, loading, error }] = useEditPhoneNumberMutation({
+ *   variables: {
+ *      pk_columns: // value for 'pk_columns'
+ *      new_phone_number: // value for 'new_phone_number'
+ *   },
+ * });
+ */
+export function useEditPhoneNumberMutation(baseOptions?: Apollo.MutationHookOptions<EditPhoneNumberMutation, EditPhoneNumberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditPhoneNumberMutation, EditPhoneNumberMutationVariables>(EditPhoneNumberDocument, options);
+      }
+export type EditPhoneNumberMutationHookResult = ReturnType<typeof useEditPhoneNumberMutation>;
+export type EditPhoneNumberMutationResult = Apollo.MutationResult<EditPhoneNumberMutation>;
+export type EditPhoneNumberMutationOptions = Apollo.BaseMutationOptions<EditPhoneNumberMutation, EditPhoneNumberMutationVariables>;
+export const GetContactListDocument = gql`
+    query GetContactList {
+  contact(order_by: {created_at: asc}) {
+    created_at
+    first_name
+    id
+    last_name
+    phones {
+      number
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetContactListQuery__
+ *
+ * To run a query within a React component, call `useGetContactListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContactListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContactListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetContactListQuery(baseOptions?: Apollo.QueryHookOptions<GetContactListQuery, GetContactListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContactListQuery, GetContactListQueryVariables>(GetContactListDocument, options);
+      }
+export function useGetContactListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContactListQuery, GetContactListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContactListQuery, GetContactListQueryVariables>(GetContactListDocument, options);
+        }
+export type GetContactListQueryHookResult = ReturnType<typeof useGetContactListQuery>;
+export type GetContactListLazyQueryHookResult = ReturnType<typeof useGetContactListLazyQuery>;
+export type GetContactListQueryResult = Apollo.QueryResult<GetContactListQuery, GetContactListQueryVariables>;
+export const GetContactDetailDocument = gql`
+    query GetContactDetail($id: Int!) {
+  contact_by_pk(id: $id) {
+    last_name
+    id
+    first_name
+    created_at
+    phones {
+      number
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetContactDetailQuery__
+ *
+ * To run a query within a React component, call `useGetContactDetailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContactDetailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContactDetailQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetContactDetailQuery(baseOptions: Apollo.QueryHookOptions<GetContactDetailQuery, GetContactDetailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContactDetailQuery, GetContactDetailQueryVariables>(GetContactDetailDocument, options);
+      }
+export function useGetContactDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContactDetailQuery, GetContactDetailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContactDetailQuery, GetContactDetailQueryVariables>(GetContactDetailDocument, options);
+        }
+export type GetContactDetailQueryHookResult = ReturnType<typeof useGetContactDetailQuery>;
+export type GetContactDetailLazyQueryHookResult = ReturnType<typeof useGetContactDetailLazyQuery>;
+export type GetContactDetailQueryResult = Apollo.QueryResult<GetContactDetailQuery, GetContactDetailQueryVariables>;
+export const GetPhoneListDocument = gql`
+    query GetPhoneList($where: phone_bool_exp, $distinct_on: [phone_select_column!], $limit: Int = 10, $offset: Int = 0, $order_by: [phone_order_by!]) {
+  phone(
+    where: $where
+    distinct_on: $distinct_on
+    limit: $limit
+    offset: $offset
+    order_by: $order_by
+  ) {
+    contact {
+      last_name
+      first_name
+      id
+    }
+    number
+  }
+}
+    `;
+
+/**
+ * __useGetPhoneListQuery__
+ *
+ * To run a query within a React component, call `useGetPhoneListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPhoneListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPhoneListQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      distinct_on: // value for 'distinct_on'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      order_by: // value for 'order_by'
+ *   },
+ * });
+ */
+export function useGetPhoneListQuery(baseOptions?: Apollo.QueryHookOptions<GetPhoneListQuery, GetPhoneListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPhoneListQuery, GetPhoneListQueryVariables>(GetPhoneListDocument, options);
+      }
+export function useGetPhoneListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPhoneListQuery, GetPhoneListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPhoneListQuery, GetPhoneListQueryVariables>(GetPhoneListDocument, options);
+        }
+export type GetPhoneListQueryHookResult = ReturnType<typeof useGetPhoneListQuery>;
+export type GetPhoneListLazyQueryHookResult = ReturnType<typeof useGetPhoneListLazyQuery>;
+export type GetPhoneListQueryResult = Apollo.QueryResult<GetPhoneListQuery, GetPhoneListQueryVariables>;

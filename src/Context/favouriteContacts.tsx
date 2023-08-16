@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 // import { Contact } from "../models/models";
 import { Contact } from "../GraphQL/generated/graphql";
+import { useContacts } from "./contacts";
+import { favoriteContactsContextType, ContactsContextType, regularContactsContextType } from "../models/models";
+import { useRegularContacts } from "./regularContacts";
 
 
 // const initFavouriteContacts = {
@@ -8,11 +11,11 @@ import { Contact } from "../GraphQL/generated/graphql";
 //   favouriteContacts: [],
 // };
 
-type favoriteContactsContextType ={
-    favouriteContacts: Contact[],
-    addFavourite: (contact: Contact) => void
-    removeFavourite: (id: number)=> void
-}
+// type favoriteContactsContextType ={
+//     favouriteContacts: Contact[],
+//     addFavourite: (contact: Contact) => void
+//     removeFavourite: (id: number)=> void
+// }
 
 interface Props {
     children: React.ReactNode;
@@ -27,27 +30,43 @@ const getInitialState = () => {
 
 const FavouriteContactContextProvider: React.FC<Props> = ({children}) => {
   const [favouriteContacts, setfavouriteContacts] = useState<Contact[]>(getInitialState);
+  // const { contacts, createContacts, removeContact, addContact } = useContacts() as ContactsContextType 
+  const { regularContacts, addRegularContact, removeRegularContact, createRegularContacts } = useRegularContacts() as regularContactsContextType 
+
+  
 
   useEffect(() => {
-    console.log("In Use Effect")
+    console.log("In Favourite Use Effect")
     console.log(favouriteContacts)
     localStorage.setItem("favouriteContacts", JSON.stringify(favouriteContacts));
   }, [favouriteContacts]);
 
-  const addFavourite = (contact: Contact) =>{
+  const createFavouriteContacts= async (data: Contact[])=>{
+    await setfavouriteContacts(data);
     
-    setfavouriteContacts([...favouriteContacts, contact])
-}
-    ;
 
-  const removeFavourite = (contactId: number) =>
-  setfavouriteContacts(prevArray => prevArray.filter(obj => obj.id !== contactId))
+  }
+  
+  const addFavourite = (contact: Contact) =>{
+      removeRegularContact(contact.id);
+      setfavouriteContacts([...favouriteContacts, contact]);
+  };
 
+  
+  const removeFavourite = (contactId: number) =>{
+   addRegularContact(favouriteContacts.find((contact) => contact.id === contactId) as Contact);
+   setfavouriteContacts(prevArray => prevArray.filter(obj => obj.id !== contactId));
+  }
+
+  const deleteFavourite =  (contactId: number) =>{
+    setfavouriteContacts(prevArray => prevArray.filter(obj => obj.id !== contactId));
+
+  }
 
     ;
 
   return (
-    <favouriteContactContext.Provider value={{ addFavourite, removeFavourite, favouriteContacts }}>
+    <favouriteContactContext.Provider value={{ addFavourite, removeFavourite, createFavouriteContacts, deleteFavourite, favouriteContacts }}>
       {children}
     </favouriteContactContext.Provider>
   );

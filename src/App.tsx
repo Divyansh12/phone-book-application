@@ -15,6 +15,8 @@ import Form from "./Components/CreateContact";
 import FavouriteContactContextProvider from './Context/favouriteContacts';
 import Nav from "./Components/Nav";
 import ContactContextProvider from "./Context/contacts";
+import ContactMain from "./Components/ContactMain";
+import RegularContactContextProvider from "./Context/regularContacts";
 
 
 
@@ -39,22 +41,25 @@ const client = new ApolloClient({
 });
 
 function App() {
-  const [view, setView] = useState("contacts");
 
   return (
     <ApolloProvider client={client}>
-    <ContactContextProvider>
+    <RegularContactContextProvider>
     <FavouriteContactContextProvider>
-    
-      {" "}
-      <Nav view={view} setView={setView} />
 
-        {view === "contacts" ?  <GetContacts /> : <GetFavourites />}
-     
-      <Form />
+    <ContactContextProvider>
     
-    </FavouriteContactContextProvider>
+      {/* {" "} */}
+      
+
+        <ContactMain></ContactMain>
+     
+      {/* <Form /> */}
+    
     </ContactContextProvider>
+    </FavouriteContactContextProvider>
+
+    </RegularContactContextProvider>
     </ApolloProvider>
   );
 }

@@ -52,7 +52,9 @@ const GetContacts: React.FC = () => {
         key={val.id}
       />
         ;
-      })}
+      })
+      
+      }
     </div>
   );
 }
