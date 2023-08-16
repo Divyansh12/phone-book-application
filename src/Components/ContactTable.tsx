@@ -1,13 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import ContactRow from './ContactRow';
-
-// import './contacttable.scss';
 import { Contact, Phone } from '../GraphQL/generated/graphql';
-import { useContacts } from '../Context/contacts';
-import { ContactsContextType, favoriteContactsContextType, regularContactsContextType } from '../models/models';
+import { favoriteContactsContextType, regularContactsContextType } from '../models/models';
 import { useFavourites } from '../Context/favouriteContacts';
 import { useRegularContacts } from '../Context/regularContacts';
+// import './contacttable.scss';
+
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+const mainContentList = css`
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const tbody = css`
+//   border: 0 !important;
+`;
+
+const theadTr = css`
+  background-color: #f1f1f1 !important;
+`;
+
+const tbodyTd = css`
+  border: none !important;
+`;
+
+const tbodyTrHover = css`
+  &:hover {
+    background-color: #e8ecef !important;
+  }
+`;
+
+
 
 interface ContactTableProps {
   contacts: Contact[];
@@ -42,18 +71,12 @@ const ContactTable: React.FC<ContactTableProps> = ({
 
   const showMoreItems = () => {
     setCount((prevValue) => prevValue + 5);
-    console.log(count)
   };
 
 
   const [contactList, setContactList] = useState<Contact[]>(regularContacts);
 
   useEffect(() => {
-    // console.log("In Contact Table")
-    // console.log(contactList)
-    console.log("Acount")
-    console.log(count)
-
     
 
     const filteredContacts = contacts.filter(
@@ -76,15 +99,12 @@ const ContactTable: React.FC<ContactTableProps> = ({
       }
       
     );
-    // console.log(filteredContacts)
     setContactList(filteredContacts);
     
   }, [contacts, regularContacts, favouriteContacts, count, filterText, showLoadMore]);
 
   useEffect(()=>{
-    console.log("Contact List Length")
-    console.log(contactList.length)
-    console.log(contactList.length>count)
+    
     if(contactList.length>count){
         setShowLoadMore(true)
     }else{
@@ -93,55 +113,27 @@ const ContactTable: React.FC<ContactTableProps> = ({
 },[contactList])
 
   return (
-    <div className='main-content-list'>
+    <div css={mainContentList} className='main-content-list'>
       <Table>
         <thead>
-          <tr>
+          <tr css={theadTr}>
             {/* <th className='text-center col-1'>+</th> */}
             <th className='text-secondary col-5'>Name</th>
             <th className='text-secondary col-5'>Favourite</th>
             <th className='text-center p-1 col-1'></th>
           </tr>
         </thead>
-        {/* <tbody>
-            <tr> <td colSpan={4} className='text-center fw-bold'>
-                Favourite Contacts
-              </td> 
-            </tr>
-          {favouriteContacts.length > 0 ? (
-            favouriteContacts.map((contact, index) => (
-              <ContactRow
-                key={index}
-                contact={contact}
-                showActiveUser={showActiveUser}
-                checkedContactIdList={checkedContactIdList}
-                setCheckedContactIDList={setCheckedContactIDList}
-                handleShow={handleShow}
-                setIsMultiDelete={setIsMultiDelete}
-                setDeleteContactId={setDeleteContactId}
-              />
-            ))
-          ) : (
-            <tr>
-              <td colSpan={4} className='text-center text-secondary fw-bold'>
-                No Favourites contacts found
-              </td>
-            </tr>
-          )}
-        </tbody> */}
-        <tbody>
-        {/* <tr> <td colSpan={4} className='text-center fw-bold'>
-                Regular Contacts
-              </td>
-         </tr> */}
+        
+        <tbody css={tbody}>
+        
 
           {contactList.length > 0 ? (
             
             contactList?.slice(0, count).map((contact, index) => {
                 const isFavourite = favouriteContacts.some((val) => val.id === contact.id);
-                console.log("is Fav")
-                console.log(isFavourite)
+                
                 return <ContactRow
+                css={tbodyTrHover}
                 key={index}
                 contact={contact}
                 showActiveUser={showActiveUser}
@@ -157,14 +149,14 @@ const ContactTable: React.FC<ContactTableProps> = ({
             })
           ) : (
             <tr>
-              <td colSpan={4} className='text-center text-secondary fw-bold'>
+              <td css={tbodyTd} colSpan={4} className='text-center text-secondary fw-bold'>
                 No contacts found
               </td>
             </tr>
           )}
           {showLoadMore && (
-        <tr> 
-            <td colSpan={4} className='text-center fw-bold'>
+        <tr css={tbodyTrHover}> 
+            <td css={tbodyTd} colSpan={4} className='text-center fw-bold'>
                 <div className=" flex flex-col  pt-12	">
                     <button
                     className="content-between bg-transparent hover:bg-green-800 text-green-800 font-semibold hover:text-white py-2 px-4 border border-green-800 hover:border-transparent rounded"

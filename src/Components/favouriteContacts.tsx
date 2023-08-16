@@ -25,9 +25,7 @@ const GetFavourites: React.FC = () => {
       <h1>Regular Contact</h1> */}
       
       {favouriteContacts.map((val: Contact) => {
-        //  console.log(typeof( favouriteContacts))
          const isFavourite=true;
-        // const isFavourite = favouriteContacts.some((contact) => contact.id === val.id);
         return <ContactCard
         contact={val}
         isFavourite={isFavourite}

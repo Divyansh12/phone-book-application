@@ -1,7 +1,41 @@
 import React from 'react';
 import { MagnifyingGlassIcon  } from '@heroicons/react/24/outline';
 
-// import './searchbar.scss';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+const searchBtn = css`
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  height: 40px;
+  line-height: 20px;
+  padding: 0 8px 0 15px;
+  border-radius: 40px;
+  background-color: #eeecec;
+`;
+
+const searchIcon = css`
+  background-color: var(--header-brand-color);
+  border-radius: 50%;
+  color: #7c797a;
+  padding: 5px;
+  height: 32px;
+  width: 32px;
+  margin: 7px 7px 7px 0;
+`;
+
+const searchInput = css`
+  background-color: #eeecec;
+  color: #7c797a;
+  width: 100%;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 
 interface SearchBarProps {
   filterText: string;
@@ -15,8 +49,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ filterText, setFilterText }) => {
 
   return (
     <div className='main-content-search'>
-      <div className='search-btn d-flex justify-content-between align-items-center'>
+      <div css={searchBtn} className='search-btn d-flex justify-content-between align-items-center'>
         <input
+          css={searchInput}
           title='Search'
           className='search-input'
           type='text'
@@ -24,7 +59,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ filterText, setFilterText }) => {
           value={filterText}
           onChange={handleSearchInputText}
         />
-        <span className='serch-icon d-flex justify-content-center align-items-center'>
+        <span css={searchIcon} className='serch-icon d-flex justify-content-center align-items-center'>
           <MagnifyingGlassIcon className='search-icon' />
         </span>
       </div>

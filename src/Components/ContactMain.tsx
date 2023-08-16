@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
-// import SearchBar from '../SearchBar/SearchBar';
-// import ContactTable from '../ContactTable/ContactTable';
-// import ContactInfo from '../ContactInfo/ContactInfo';
-// import ContactButton from '../ContactButton/ContactButton';
-// import ContactModel from '../ContactModel/ContactModel';
-// import DeleteModel from '../DeleteModel/DeleteModel';
+
 
 // import Logo from '../../assets/contact-list.png';
 
-// import './contactmain.scss';
 import { Button } from 'react-bootstrap';
-import { AddNumberToContactDocument, Contact, Phone, Phone_Insert_Input, useAddContactWithPhonesMutation, useAddNumberToContactMutation, useDeleteContactMutationMutation, useEditContactByIdMutation, useEditPhoneNumberMutation } from '../GraphQL/generated/graphql';
+import { Contact, Phone, Phone_Insert_Input, useAddContactWithPhonesMutation, useAddNumberToContactMutation, useDeleteContactMutationMutation, useEditContactByIdMutation, useEditPhoneNumberMutation } from '../GraphQL/generated/graphql';
 import { ContactsContextType, favoriteContactsContextType, regularContactsContextType } from '../models/models';
 import { useContacts } from '../Context/contacts';
-import GetContacts from './GetContacts';
-import GetFavourites from "./favouriteContacts";
-import Nav from "./Nav";
+
 import ContactModel from './ContactModel';
 import ContactButton from './ContactButton';
 import ContactTable from './ContactTable';
@@ -28,7 +20,27 @@ import SearchBar from './SearchBar';
 import DeleteModel from './DeleteModal';
 import { useRegularContacts } from '../Context/regularContacts';
 
-// import { TrashIcon } from '@heroicons/react/outline';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+const mainContentBottom = css`
+  height: 100%;
+  width: 100%;
+`;
+
+const mainContentTop = css`
+  height: 50px;
+  box-shadow: 5px -3px 8px 0px;
+`;
+
+const logo = css`
+  height: 50px;
+  pointer-events: none;
+  margin: 8px 10px 5px 0;
+`;
+
+
+
 
 const ContactMain: React.FC = () => {
     
@@ -51,17 +63,12 @@ const ContactMain: React.FC = () => {
 
 
   useEffect(() => {
-    // console.log(contacts)
       if (data) {
-        console.log("In Contact Main Use Effect")
-        // console.log(data)
-        // console.log(contacts)
+      
         createContacts(data.contact);
     }
-    // localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [data]);
 
-  const [view, setView] = useState("contacts");
 
   const [filterText, setFilterText] = useState<string>('');
 
@@ -95,10 +102,7 @@ const ContactMain: React.FC = () => {
   };
 
   const addContactDB = async (contact: Contact) => {
-    // setContacts([...contacts, contact]);
-    console.log("Phone Insert")
-    console.log(contact)
-    console.log(contact.phones as Phone_Insert_Input[])
+    
     var phones: Phone_Insert_Input[]=[];
     contact.phones.map((val: Phone) => {
         var phone_number={number: val.number} as Phone_Insert_Input;
@@ -114,11 +118,7 @@ const ContactMain: React.FC = () => {
 
     var new_contact=response.data?.insert_contact?.returning[0] as Contact
     addContact(new_contact)
-    // createContacts(contacts)
-    // console.log(response.data?.insert_contact?.returning[0] as Contact)
-    // if (error) {
-    //   console.log(error);
-    // }
+    
   };
 
   const deleteContact = async(id: number) => {
@@ -140,12 +140,9 @@ const ContactMain: React.FC = () => {
   };
 
   const editContact = async (new_contact: Contact) => {
-    console.log("Edit Contact Function")
-    console.log(new_contact)
-    const old_contact = contacts.find((contact) => contact.id === new_contact.id);
-    console.log(old_contact)
-
     
+    const old_contact = contacts.find((contact) => contact.id === new_contact.id);
+   
     const contact_response = await EditContactById({
       variables: {
         id: new_contact.id,
@@ -158,8 +155,6 @@ const ContactMain: React.FC = () => {
     const old_contact_length=old_contact?.phones?.length as number;
     const new_contact_length=new_contact?.phones?.length as number;
 
-    console.log("old contact phone length " + old_contact_length)
-    console.log("new contact phone length " + new_contact_length)
 
     if(old_contact_length === new_contact_length){
       old_contact?.phones.map((val: Phone, index)=>{
@@ -176,7 +171,6 @@ const ContactMain: React.FC = () => {
         
         })
       }else if(old_contact_length < new_contact_length){
-        console.log("Add new contact phone length " + new_contact_length)
 
         old_contact?.phones.map((val: Phone, index)=>{
         
@@ -194,8 +188,6 @@ const ContactMain: React.FC = () => {
 
           const left_phones=new_contact?.phones?.slice(old_contact_length,)
 
-        console.log("Left Phone ");
-        console.log(left_phones);
           
           left_phones?.map((val: Phone, index)=>{
             const add_phone_response = AddNumberToContact({
@@ -210,18 +202,12 @@ const ContactMain: React.FC = () => {
       }
       
     
-    
-
-    // const newContacts = contacts.map((c) =>
-    //   c.id === new_contact.id ? new_contact : c
-    // );
     updateContact(new_contact);
     setActiveContact(new_contact);
   };
 
   const showActiveUser = (id: number) => {
-    console.log("Active Contact")
-    console.log(activeContact)
+   
     const newActiveContact = contacts.find((contact) => contact.id === id);
     setActiveContact(newActiveContact as Contact);
     setIsActive(true);
@@ -248,10 +234,10 @@ const ContactMain: React.FC = () => {
 
     <div className='main-content container-fluid'>
       <div className='row'>
-        <div className='main-content-top col-xl-12'></div>
+        <div css={mainContentTop} className='main-content-top col-xl-12'></div>
       </div>
       <div className='row'>
-        <div className='main-content-bottom container-fluid p-lg-5 p-3'>
+        <div css={mainContentBottom} className='main-content-bottom container-fluid p-lg-5 p-3'>
           <div className='row'>
             <div className='col-xl-12 d-flex'>
               <div className='main-content-header'>
@@ -324,6 +310,7 @@ const ContactMain: React.FC = () => {
             <div className='col-lg-5'>
               {isActive && (
                 <ContactInfo
+                  key={activeContact?.id as number}
                   activeContact={activeContact as Contact}
                   setIsEdit={setIsEdit}
                   setModalShow={setModalShow}
@@ -356,60 +343,7 @@ const ContactMain: React.FC = () => {
       </div>
     </div>
 
-    // <div className='main-content container-fluid'>
-    //   <div className='row'>
-    //     {/* Rest of your JSX code */}
-    //     {/* <GetContacts></GetContacts> */}
-    //     <Nav view={view} setView={setView} />
-
-    //     {/* {view === "contacts" ?  <GetContacts /> : <GetFavourites />} */}
-    //     <div className='col-lg-7 '>
-          
-    //           <ContactTable
-    //             // contacts={contacts}
-    //             filterText={filterText}
-    //             showActiveUser={showActiveUser}
-    //             checkedContactIdList={checkedContactIdList}
-    //             setCheckedContactIDList={setCheckedContactIDList}
-    //             handleShow={handleShow}
-    //             setIsMultiDelete={setIsMultiDelete}
-    //             setDeleteContactId={setDeleteContactId}
-    //           />
-    //         </div>
-    //         <div className='col-lg-5'>
-    //           {
-
-    //           isActive 
-    //           && (
-    //             <ContactInfo
-    //               activeContact={activeContact as Contact}
-    //               setIsEdit={setIsEdit}
-    //               setModalShow={setModalShow}
-    //               isFavourite={isFavourite}
-    //               addToFavourite={addFavourite}
-    //               removeFromFavourite={removeFavourite}
-    //             />
-    //           )}
-    //         </div>
-    //     <ContactButton
-    //     btnIcon={'plus'}
-    //     btnText={'Add Contact'}
-    //     btnType={'add'}
-    //     setModalShow={setModalShow}
-    //     setIsEdit={setIsEdit}
-    //     ></ContactButton>
-    //     <ContactModel 
-    //         activeContact={activeContact as Contact}
-    //         isEdit={isEdit}
-    //             show={modalShow}
-    //             onHide={() => setModalShow(false)}
-    //             title={isEdit ? 'Edit Contact' : 'Add Contact'}
-    //             addContact={addContactDB}
-    //             editContact={editContact}></ContactModel>
-        
-        
-    //   </div>
-    // </div>
+    
   );
 };
 

@@ -2,7 +2,36 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
 
-// import './contactbutton.scss';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+const customBtn = css`
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(45deg, #ff8767, #fe67a3);
+  box-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
+  color: white !important;
+  border: none;
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  &:hover {
+    color: white;
+  }
+`;
+
+const customBtnIcon = css`
+  height: 20px !important;
+  width: 20px !important;
+  margin-right: 5px;
+`;
+
+
+
 
 interface ContactButtonProps {
   btnIcon: 'pencil' | 'plus';
@@ -28,12 +57,12 @@ const ContactButton: React.FC<ContactButtonProps> = ({
           setModalShow(true);
           btnType === 'add' ? setIsEdit(false) : setIsEdit(true);
         }}
-        className='custom-btn'
+        css={customBtn}
       >
         {btnIcon === 'pencil' ? (
-          <PencilIcon className='custom-btn-icon align-middle' />
+          <PencilIcon css={customBtnIcon} />
         ) : btnIcon === 'plus' ? (
-          <PlusIcon className='custom-btn-icon align-middle' />
+          <PlusIcon css={customBtnIcon}  />
         ) : null}
         {btnText}
       </Button>

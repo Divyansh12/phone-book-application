@@ -1,10 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Row, Col, InputGroup, Button } from 'react-bootstrap';
+import { Modal, Form, Row, Col, Button } from 'react-bootstrap';
 // import './contactmodel.scss';
-import { Contact, Phone, Phone_Insert_Input } from '../GraphQL/generated/graphql';
+import { Contact, Phone } from '../GraphQL/generated/graphql';
 import { useContacts } from '../Context/contacts';
 import { ContactsContextType } from '../models/models';
 import ErrorAlert from './errorAlert';
+
+/** @jsxImportSource @emotion/react */
+// import { css } from '@emotion/react';
+
+// const formControlValid = css`
+//   color: #212529;
+//   border-color: #ced4da;
+//   background: none !important;
+
+//   &:focus {
+//     color: #212529;
+//     background-color: #fff;
+//     border-color: #86b7fe;
+//     outline: 0;
+//     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%) !important;
+//   }
+// `;
+
+// const formSelectValid = css`
+//   color: #212529;
+//   border-color: #ced4da;
+
+//   &:focus {
+//     color: #212529;
+//     background-color: #fff;
+//     border-color: #86b7fe;
+//     outline: 0;
+//     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%) !important;
+//   }
+// `;
+
+
 
 interface ContactModelProps {
   activeContact: Contact;
@@ -34,16 +66,12 @@ const ContactModel: React.FC<ContactModelProps> = ({
 
 
   useEffect(() => {
-    // console.log("Active contact Modal")
-    // console.log(activeContact)
+    
     const newfunc = async (isEdit: boolean)=>{
     await isEdit ? setContact(activeContact) : setContact(initialContact)
     };
     newfunc(isEdit)
-    // console.log("Activated contact Modal")
-
-    // console.log(contact)
-
+    
     const phones: string[]=[] 
 
     if(isEdit){
@@ -61,7 +89,6 @@ const ContactModel: React.FC<ContactModelProps> = ({
   const [phone_inputs, setPhoneInputs] = useState<string[]>(['']);
 
   const handleInputChange = async (index: number, value: string) => {
-    console.log(phone_inputs)
     const newInputs = [...phone_inputs];
     newInputs[index] = value;
     await setPhoneInputs(newInputs);
@@ -101,18 +128,13 @@ const ContactModel: React.FC<ContactModelProps> = ({
     );
     
     if (!isUnique && !isEdit) {
-      console.log("Contact Name is not unique")
       setError('Contact Name must be unique.');
       
-      setValidated(false);
 
-      // return;
     }
 
     if (form.checkValidity() && (isUnique || isEdit) ) {
-      console.log("In Form Submit")
-      console.log(contact)
-
+      
       isEdit ? editContact(contact) : addContact(contact);
 
       setContact(initialContact);

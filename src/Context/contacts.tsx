@@ -32,13 +32,11 @@ const ContactContextProvider: React.FC<Props> = ({children}) => {
 
 
   useEffect(() => {
-    console.log("In Use Effect of contact context")
-    console.log(contacts)
+    
     localStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts, regularContacts, favouriteContacts]);
 
   const addContact = (contact: Contact) =>{
-    console.log("Adding Contact")
     setContacts([...contacts, contact])
     addRegularContact(contact);
   };
@@ -99,7 +97,6 @@ const ContactContextProvider: React.FC<Props> = ({children}) => {
   }
 
   const removeContact = (contactId: number) =>{
-    console.log("removing contact id" + contactId);
     setContacts(prevArray => prevArray.filter(obj => obj.id !== contactId));
     removeRegularContact(contactId);
     deleteFavourite(contactId);

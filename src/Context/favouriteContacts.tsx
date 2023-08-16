@@ -36,8 +36,6 @@ const FavouriteContactContextProvider: React.FC<Props> = ({children}) => {
   
 
   useEffect(() => {
-    console.log("In Favourite Use Effect")
-    console.log(favouriteContacts)
     localStorage.setItem("favouriteContacts", JSON.stringify(favouriteContacts));
   }, [favouriteContacts]);
 

@@ -3,9 +3,8 @@ import ContactAvatar from './ContactAvatar';
 import { TrashIcon } from '@heroicons/react/24/outline';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-// import './contactrow.scss';
 import { Contact } from '../GraphQL/generated/graphql';
+
 
 
 const buttonStyles = css`
@@ -38,6 +37,24 @@ const buttonStyles = css`
   }
 `;
 
+
+const listAvatar = css`
+  height: 50px !important;
+  width: 50px !important;
+`;
+
+const tr = css`
+  cursor: pointer;
+`;
+
+const trashIcon = css`
+  height: 30px !important;
+  width: 30px !important;
+  color: #eb675b;
+`;
+
+
+
 interface ContactRowProps {
   contact: Contact;
   showActiveUser: (id: number) => void;
@@ -65,35 +82,20 @@ const ContactRow: React.FC<ContactRowProps> = ({
 }) => {
 
     useEffect(() => {
-        // console.log("In Contact Row")
-        // console.log(contact)
+        
       }, [contact]);
 
   return (
-    <tr key={contact.id}>
-      {/* <td className='align-middle text-center'>
-        <input
-          title='Select Contact'
-          type='checkbox'
-          checked={checkedContactIdList.includes(contact.id)}
-          onChange={() => {
-            if (checkedContactIdList.includes(contact.id)) {
-              setCheckedContactIDList(
-                checkedContactIdList.filter((item) => item !== contact.id)
-              );
-            } else {
-              setCheckedContactIDList([...checkedContactIdList, contact.id]);
-            }
-          }}
-        />
-      </td> */}
+    <tr css={tr} key={contact.id}>
+      
       <td onClick={() => showActiveUser(contact.id)}>
         <div className='contact d-flex'>
           <div className='contact-avatar m-2'>
-            {/* <ContactAvatar
+            <ContactAvatar
               name={contact.first_name + ' ' + contact.last_name}
               className='list-avatar'
-            /> */}
+              css={listAvatar}
+            />
           </div>
           <div className='contact-info d-flex flex-column justify-content-center m-2'>
             <div className='contact-info-name truncate-string'>
@@ -101,13 +103,7 @@ const ContactRow: React.FC<ContactRowProps> = ({
                 {contact.first_name} {contact.last_name}
               </p>
             </div>
-            {/* <div className='contact-info-email'>
-              <p className='m-0'>
-                <span className='text-secondary truncate-string'>
-                  {contact.email}
-                </span>
-              </p>
-            </div> */}
+            
           </div>
         </div>
       </td>
@@ -129,12 +125,12 @@ const ContactRow: React.FC<ContactRowProps> = ({
                     </button>
                     
             )}
-          {/* <p className='m-0 truncate-string'>{contact.company}</p> */}
         </div>
       </td>
       <td className='align-middle text-center' title='Delete Contact'>
         <TrashIcon
           className='trash-icon'
+          css={trashIcon}
           onClick={() => {
             handleShow();
             setIsMultiDelete(false);

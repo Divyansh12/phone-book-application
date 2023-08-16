@@ -15,14 +15,10 @@ const getInitialState = () => {
 };
 
 const RegularContactContextProvider: React.FC<Props> = ({children}) => {
-  const [regularContacts, setregularContacts] = useState<Contact[]>([]);
-  // const { contacts, removeContact, addContact } = useContacts() as ContactsContextType 
-
-  
+  const [regularContacts, setregularContacts] = useState<Contact[]>(getInitialState);
+ 
 
   useEffect(() => {
-    console.log("In Regular Contact Use Effect")
-    console.log(regularContacts)
     localStorage.setItem("regularContacts", JSON.stringify(regularContacts));
   }, [regularContacts]);
 
@@ -31,15 +27,11 @@ const RegularContactContextProvider: React.FC<Props> = ({children}) => {
   }
 
   const addRegularContact = (contact: Contact) =>{
-    // removeContact(contact.id);
-    console.log(" Adding reg contact ")
-    console.log(contact)
     setregularContacts([...regularContacts, contact]);
 }
     ;
 
   const removeRegularContact = (contactId: number) =>{
-  //  addContact(regularContacts.find((contact) => contact.id === contactId) as Contact);
    setregularContacts(prevArray => prevArray.filter(obj => obj.id !== contactId));
   }
 

@@ -19,9 +19,7 @@ const GetContacts: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-        console.log("In Start")
-        console.log(data)
-        console.log(contacts)
+        
         createContacts(data.contact);
     }
   }, [data]);
@@ -41,8 +39,7 @@ const GetContacts: React.FC = () => {
       <h1>Regular Contact</h1> */}
       
       {contacts.map((val: Contact) => {
-        //  console.log(typeof( favouriteContacts))
-        //  const isFavourite=false;
+        
         const isFavourite = favouriteContacts.some((contact) => contact.id === val.id);
         return <ContactCard
         contact={val}
