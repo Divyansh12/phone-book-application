@@ -218,7 +218,6 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
               )}
                 
 
-                {/* Modal view */}
                 {showModal && (
                   <Modal
                     show={showModal}

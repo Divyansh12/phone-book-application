@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Logo from '../assets/contact-list.png';
 import { Contact, Phone, Phone_Insert_Input, useAddContactWithPhonesMutation, useAddNumberToContactMutation, useDeleteContactMutationMutation, useEditContactByIdMutation, useEditPhoneNumberMutation, useGetContactListQuery } from '../GraphQL/generated/graphql';
 import { ContactsContextType, favoriteContactsContextType, regularContactsContextType } from '../models/models';
 import { useContacts } from '../Context/contacts';
@@ -220,7 +219,7 @@ const ContactMain: React.FC = () => {
         <div css={mainContentBottom} className='main-content-bottom container-fluid p-lg-5 p-3'>
           <div className='row'>
             <div className='col-xl-12 d-flex'>
-              <img src={Logo} css={logo} alt='logo' className='logo' />
+              <img src="https://phone-book-application.netlify.app/contact-list.png" css={logo} alt='logo' className='logo' />
               <div className='main-content-header'>
                 <h3>Contacts</h3>
                 <p>Welcome to Phone Book Application - By Divyansh</p>

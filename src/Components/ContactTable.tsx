@@ -111,7 +111,6 @@ const ContactTable: React.FC<ContactTableProps> = ({
       <Table>
         <thead>
           <tr css={theadTr}>
-            {/* <th className='text-center col-1'>+</th> */}
             <th className='text-secondary col-5'>Name</th>
             <th className='text-secondary col-5'>Add/Remove Favourite</th>
             <th className='text-center p-1 col-1'></th>

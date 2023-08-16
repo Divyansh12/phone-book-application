@@ -26,7 +26,7 @@ const buttonStyles = css`
   
   &:hover {
     color: #eeb004 !important;
-    background-color: #e8ecef; /* New color for hover */
+    background-color: #e8ecef;
   }
 
   &[value="false"] {
@@ -34,7 +34,7 @@ const buttonStyles = css`
   }
 
   &[value="true"] {
-    color: #eeb004; /* New color for value="false" */
+    color: #eeb004;
   }
 `;
 

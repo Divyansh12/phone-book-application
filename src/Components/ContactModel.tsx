@@ -6,36 +6,6 @@ import { useContacts } from '../Context/contacts';
 import { ContactsContextType } from '../models/models';
 import ErrorAlert from './errorAlert';
 
-/** @jsxImportSource @emotion/react */
-// import { css } from '@emotion/react';
-
-// const formControlValid = css`
-//   color: #212529;
-//   border-color: #ced4da;
-//   background: none !important;
-
-//   &:focus {
-//     color: #212529;
-//     background-color: #fff;
-//     border-color: #86b7fe;
-//     outline: 0;
-//     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%) !important;
-//   }
-// `;
-
-// const formSelectValid = css`
-//   color: #212529;
-//   border-color: #ced4da;
-
-//   &:focus {
-//     color: #212529;
-//     background-color: #fff;
-//     border-color: #86b7fe;
-//     outline: 0;
-//     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%) !important;
-//   }
-// `;
-
 
 
 interface ContactModelProps {
@@ -160,7 +130,6 @@ const ContactModel: React.FC<ContactModelProps> = ({
       <Modal.Body>
         <Form noValidate validated={validated} >
           <Row className='mb-3'>
-            {/* Rest of your form inputs */}
 
             <Form.Group as={Col} md='6' controlId='validationCustomFirstName'>
               <Form.Label>First Name</Form.Label>
