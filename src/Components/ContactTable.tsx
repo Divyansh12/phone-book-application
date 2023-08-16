@@ -43,10 +43,7 @@ interface ContactTableProps {
   contacts: Contact[];
   filterText: string;
   showActiveUser: (id: number) => void;
-  checkedContactIdList: number[];
-  setCheckedContactIDList: (contactIds: number[]) => void;
   handleShow: () => void;
-  setIsMultiDelete: (value: boolean) => void;
   setDeleteContactId: (id: number) => void;
 }
 
@@ -54,10 +51,7 @@ const ContactTable: React.FC<ContactTableProps> = ({
   contacts,
   filterText,
   showActiveUser,
-  checkedContactIdList,
-  setCheckedContactIDList,
   handleShow,
-  setIsMultiDelete,
   setDeleteContactId,
 }) => {
 //   const { contacts } = useContacts() as ContactsContextType;
@@ -83,7 +77,7 @@ const ContactTable: React.FC<ContactTableProps> = ({
     const filteredContacts = contacts.filter(
       (contact) =>{
         var phones: string='';
-        contact.phones.map((val: Phone) => {
+        contact.phones.forEach((val: Phone) => {
         phones = phones +" "+ val.number as string;
       })
         
@@ -138,13 +132,10 @@ const ContactTable: React.FC<ContactTableProps> = ({
                 key={index}
                 contact={contact}
                 showActiveUser={showActiveUser}
-                checkedContactIdList={checkedContactIdList}
-                setCheckedContactIDList={setCheckedContactIDList}
                 isFavourite={isFavourite}
                 removeFromFavourite={removeFavourite}
                 addToFavourite={addFavourite}
                 handleShow={handleShow}
-                setIsMultiDelete={setIsMultiDelete}
                 setDeleteContactId={setDeleteContactId}
               />
             })

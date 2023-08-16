@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 const ErrorAlert: React.FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {

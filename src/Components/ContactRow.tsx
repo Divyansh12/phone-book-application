@@ -71,26 +71,20 @@ const justifyContentCenter = css`
 interface ContactRowProps {
   contact: Contact;
   showActiveUser: (id: number) => void;
-  checkedContactIdList: number[];
-  setCheckedContactIDList: (contactIds: number[]) => void;
   handleShow: () => void;
   isFavourite: boolean;
   addToFavourite: (contact: Contact)=>void;
   removeFromFavourite: (id: number)=> void;
-  setIsMultiDelete: (value: boolean) => void;
   setDeleteContactId: (id: number) => void;
 }
 
 const ContactRow: React.FC<ContactRowProps> = ({
   contact,
   showActiveUser,
-  checkedContactIdList,
-  setCheckedContactIDList,
   isFavourite,
   addToFavourite,
   removeFromFavourite,
   handleShow,
-  setIsMultiDelete,
   setDeleteContactId,
 }) => {
 
@@ -146,7 +140,6 @@ const ContactRow: React.FC<ContactRowProps> = ({
           css={trashIcon}
           onClick={() => {
             handleShow();
-            setIsMultiDelete(false);
             setDeleteContactId(contact.id);
           }}
         />

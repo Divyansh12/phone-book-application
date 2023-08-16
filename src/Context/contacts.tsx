@@ -6,12 +6,6 @@ import { useFavourites } from "./favouriteContacts";
 
  
 
-// const initFavouriteContacts = {
-//   
-//   favouriteContacts: [],
-// };
-
-
 interface Props {
     children: React.ReactNode;
   }
@@ -26,7 +20,7 @@ const getInitialState = () => {
 const ContactContextProvider: React.FC<Props> = ({children}) => {
   const [ contacts, setContacts] = useState<Contact[]>(getInitialState);
   const { regularContacts, addRegularContact, removeRegularContact, createRegularContacts } = useRegularContacts() as regularContactsContextType 
-  const { favouriteContacts, createFavouriteContacts, addFavourite, removeFavourite, deleteFavourite } = useFavourites() as favoriteContactsContextType;
+  const { favouriteContacts, createFavouriteContacts, deleteFavourite } = useFavourites() as favoriteContactsContextType;
 
 
 
@@ -44,15 +38,11 @@ const ContactContextProvider: React.FC<Props> = ({children}) => {
   const updateContact = async (contact: Contact) => {
     const index = contacts.findIndex(item => item.id === contact.id);
     if (index !== -1) {
-      // await setContacts(prevArray => prevArray.filter(obj => obj.id !== contact.id));
-
-      // await setContacts([...contacts, contact])
-
+      
       const newContacts = contacts.map((c) =>
         c.id === contact.id ? contact : c
       );
       await createContacts(newContacts)
-      // contacts[index] = contact;
     }
 
     const favIndex = favouriteContacts.findIndex(item => item.id === contact.id);
@@ -64,20 +54,16 @@ const ContactContextProvider: React.FC<Props> = ({children}) => {
         c.id === contact.id ? contact : c
       );
       await createFavouriteContacts(newContacts)
-      // favouriteContacts[favIndex] = { ...contact };
     }
 
     const regIndex = regularContacts.findIndex(item => item.id === contact.id);
     if (regIndex !== -1) {
 
-      // await removeRegularContact(contact.id)
-      // await addRegularContact(contact)
-
+      
       const newContacts = regularContacts.map((c) =>
         c.id === contact.id ? contact : c
       );
       await createRegularContacts(newContacts)
-      // regularContacts[regIndex] = { ...contact };
     }
 
   }
@@ -86,11 +72,10 @@ const ContactContextProvider: React.FC<Props> = ({children}) => {
   const createContacts= async (data: Contact[])=>{
     await setContacts(data);
     createRegularContacts(data);
-    contacts.map((contact: Contact)=>{
+    contacts.forEach((contact: Contact)=>{
       const favIndex = favouriteContacts.findIndex(item => item.id === contact.id);
       if (favIndex !== -1) {
       removeRegularContact(contact.id)
-
       }
     })
 

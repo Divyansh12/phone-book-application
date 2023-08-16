@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../assets/contact-list.png';
-import { Button } from 'react-bootstrap';
-import { Contact, Phone, Phone_Insert_Input, useAddContactWithPhonesMutation, useAddNumberToContactMutation, useDeleteContactMutationMutation, useEditContactByIdMutation, useEditPhoneNumberMutation, useGetContactDetailQuery, useGetContactListQuery } from '../GraphQL/generated/graphql';
+import { Contact, Phone, Phone_Insert_Input, useAddContactWithPhonesMutation, useAddNumberToContactMutation, useDeleteContactMutationMutation, useEditContactByIdMutation, useEditPhoneNumberMutation, useGetContactListQuery } from '../GraphQL/generated/graphql';
 import { ContactsContextType, favoriteContactsContextType, regularContactsContextType } from '../models/models';
 import { useContacts } from '../Context/contacts';
 import ContactModel from './ContactModel';
@@ -9,7 +8,6 @@ import ContactButton from './ContactButton';
 import ContactTable from './ContactTable';
 import ContactInfo from './ContactInfo';
 import { useFavourites } from '../Context/favouriteContacts';
-import { TrashIcon } from '@heroicons/react/24/outline';
 import SearchBar from './SearchBar';
 import DeleteModel from './DeleteModal';
 import { useRegularContacts } from '../Context/regularContacts';
@@ -49,7 +47,7 @@ const ContactMain: React.FC = () => {
 
 
     const { contacts, createContacts, updateContact, addContact, removeContact } = useContacts() as ContactsContextType;
-    const { regularContacts, addRegularContact, removeRegularContact, createRegularContacts } = useRegularContacts() as regularContactsContextType 
+    const { regularContacts } = useRegularContacts() as regularContactsContextType 
 
     const { favouriteContacts, addFavourite, removeFavourite } = useFavourites() as favoriteContactsContextType;
 
@@ -81,10 +79,6 @@ const ContactMain: React.FC = () => {
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const [checkedContactIdList, setCheckedContactIDList] = useState<number[]>([]);
-
-  const [isMultiDelete, setIsMultiDelete] = useState<boolean>(false);
-
   const [deleteContactId, setDeleteContactId] = useState<number | null>(null);
 
   const [show, setShow] = useState<boolean>(false);
@@ -94,18 +88,16 @@ const ContactMain: React.FC = () => {
   const handleShow = () => setShow(true);
 
   const handleDelete = () => {
-    if (isMultiDelete) {
-      deleteCheckedContacts(checkedContactIdList);
-    } else {
-      deleteContact(deleteContactId as number);
-    }
+   
+    deleteContact(deleteContactId as number);
+    
     handleClose();
   };
 
   const addContactDB = async (contact: Contact) => {
     
     var phones: Phone_Insert_Input[]=[];
-    contact.phones.map((val: Phone) => {
+    contact.phones.forEach((val: Phone) => {
         var phone_number={number: val.number} as Phone_Insert_Input;
         phones.push(phone_number);
       })
@@ -123,7 +115,8 @@ const ContactMain: React.FC = () => {
   };
 
   const deleteContact = async(id: number) => {
-    const delete_response = await DeleteContactMutation({
+    // const delete_response = 
+    await DeleteContactMutation({
       variables: {
         id: id,
       },
@@ -133,18 +126,15 @@ const ContactMain: React.FC = () => {
       setActiveContact(null);
       setIsActive(false);
     }
-    if (checkedContactIdList.includes(id)) {
-      setCheckedContactIDList(
-        checkedContactIdList.filter((contactId) => contactId !== id)
-      );
-    }
+    
   };
 
   const editContact = async (new_contact: Contact) => {
     
     const old_contact = contacts.find((contact) => contact.id === new_contact.id);
    
-    const contact_response = await EditContactById({
+    // const contact_response = 
+    await EditContactById({
       variables: {
         id: new_contact.id,
         _set:{ 
@@ -158,9 +148,10 @@ const ContactMain: React.FC = () => {
 
 
     if(old_contact_length === new_contact_length){
-      old_contact?.phones.map((val: Phone, index)=>{
+      old_contact?.phones.forEach((val: Phone, index)=>{
         
-        const phone_response = EditPhoneNumberMutation({
+        // const phone_response = 
+        EditPhoneNumberMutation({
           variables: {
             pk_columns: {
               number: val.number,
@@ -173,9 +164,10 @@ const ContactMain: React.FC = () => {
         })
       }else if(old_contact_length < new_contact_length){
 
-        old_contact?.phones.map((val: Phone, index)=>{
+        old_contact?.phones.forEach((val: Phone, index)=>{
         
-          const phone_response = EditPhoneNumberMutation({
+          // const phone_response = 
+          EditPhoneNumberMutation({
             variables: {
               pk_columns: {
                 number: val.number,
@@ -190,8 +182,9 @@ const ContactMain: React.FC = () => {
           const left_phones=new_contact?.phones?.slice(old_contact_length,)
 
           
-          left_phones?.map((val: Phone, index)=>{
-            const add_phone_response = AddNumberToContact({
+          left_phones?.forEach((val: Phone, index)=>{
+            // const add_phone_response = 
+            AddNumberToContact({
               variables: {
                   contact_id: old_contact?.id as number,
                   phone_number: val.number,               
@@ -216,20 +209,6 @@ const ContactMain: React.FC = () => {
 
   const isFavourite = favouriteContacts.some((contact) => contact.id === activeContact?.id);
 
-
-  const deleteCheckedContacts = (checkedContactIdList: number[]) => {
-    const newContacts = contacts.filter((contact) =>
-      checkedContactIdList.includes(contact.id) ? false : true
-    );
-    // setContacts(newContacts);
-    setCheckedContactIDList([]);
-    checkedContactIdList.forEach((id) => {
-      if (activeContact && activeContact.id === id) {
-        setActiveContact(null);
-        setIsActive(false);
-      }
-    });
-  };
 
   return (
 
@@ -264,23 +243,7 @@ const ContactMain: React.FC = () => {
                 setIsEdit={setIsEdit}
               />
             </div>
-            <div className='col-xl-7 col-md-3 d-flex'>
-              {checkedContactIdList.length > 0 ? (
-                <Button
-                  title={`Delete ${checkedContactIdList.length} contact(s)`}
-                  className='custom-btn'
-                  onClick={() => {
-                    handleShow();
-                    setIsMultiDelete(true);
-                  }}
-                >
-                  <TrashIcon className='custom-btn-icon' />
-                  Delete
-                </Button>
-              ) : (
-                ''
-              )}
-            </div>
+            
           </div>
           <div className='row p-lg-5 pb-lg-0 pt-lg-0'>
             <div className='col-lg-7 '> 
@@ -289,10 +252,7 @@ const ContactMain: React.FC = () => {
                 contacts={favouriteContacts}
                 filterText={filterText}
                 showActiveUser={showActiveUser}
-                checkedContactIdList={checkedContactIdList}
-                setCheckedContactIDList={setCheckedContactIDList}
                 handleShow={handleShow}
-                setIsMultiDelete={setIsMultiDelete}
                 setDeleteContactId={setDeleteContactId}
               />
             <div css={headingStyles}> Regular Contacts </div>
@@ -300,10 +260,7 @@ const ContactMain: React.FC = () => {
                 contacts={regularContacts}
                 filterText={filterText}
                 showActiveUser={showActiveUser}
-                checkedContactIdList={checkedContactIdList}
-                setCheckedContactIDList={setCheckedContactIDList}
                 handleShow={handleShow}
-                setIsMultiDelete={setIsMultiDelete}
                 setDeleteContactId={setDeleteContactId}
               />
             </div>

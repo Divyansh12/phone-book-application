@@ -1,21 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-// import { Contact } from "../models/models";
 import { Contact } from "../GraphQL/generated/graphql";
-import { useContacts } from "./contacts";
-import { favoriteContactsContextType, ContactsContextType, regularContactsContextType } from "../models/models";
+import { favoriteContactsContextType, regularContactsContextType } from "../models/models";
 import { useRegularContacts } from "./regularContacts";
-
-
-// const initFavouriteContacts = {
-//   
-//   favouriteContacts: [],
-// };
-
-// type favoriteContactsContextType ={
-//     favouriteContacts: Contact[],
-//     addFavourite: (contact: Contact) => void
-//     removeFavourite: (id: number)=> void
-// }
 
 interface Props {
     children: React.ReactNode;
@@ -30,8 +16,7 @@ const getInitialState = () => {
 
 const FavouriteContactContextProvider: React.FC<Props> = ({children}) => {
   const [favouriteContacts, setfavouriteContacts] = useState<Contact[]>(getInitialState);
-  // const { contacts, createContacts, removeContact, addContact } = useContacts() as ContactsContextType 
-  const { regularContacts, addRegularContact, removeRegularContact, createRegularContacts } = useRegularContacts() as regularContactsContextType 
+  const { addRegularContact, removeRegularContact } = useRegularContacts() as regularContactsContextType 
 
   
 
