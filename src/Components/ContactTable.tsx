@@ -5,7 +5,6 @@ import { Contact, Phone } from '../GraphQL/generated/graphql';
 import { favoriteContactsContextType, regularContactsContextType } from '../models/models';
 import { useFavourites } from '../Context/favouriteContacts';
 import { useRegularContacts } from '../Context/regularContacts';
-// import './contacttable.scss';
 
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';

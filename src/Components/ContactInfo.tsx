@@ -127,11 +127,11 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
     handleResize();
 
     // Add event listener for resize
-    window.addEventListener('resize', handleResize);
+    // window.addEventListener('resize', handleResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
+    //   window.removeEventListener('resize', handleResize);
     };
   }, [id, first_name, last_name, phones]);
 
