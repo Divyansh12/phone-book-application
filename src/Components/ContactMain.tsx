@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
-
-
-// import Logo from '../../assets/contact-list.png';
-
+import Logo from '../assets/contact-list.png';
 import { Button } from 'react-bootstrap';
-import { Contact, Phone, Phone_Insert_Input, useAddContactWithPhonesMutation, useAddNumberToContactMutation, useDeleteContactMutationMutation, useEditContactByIdMutation, useEditPhoneNumberMutation } from '../GraphQL/generated/graphql';
+import { Contact, Phone, Phone_Insert_Input, useAddContactWithPhonesMutation, useAddNumberToContactMutation, useDeleteContactMutationMutation, useEditContactByIdMutation, useEditPhoneNumberMutation, useGetContactDetailQuery, useGetContactListQuery } from '../GraphQL/generated/graphql';
 import { ContactsContextType, favoriteContactsContextType, regularContactsContextType } from '../models/models';
 import { useContacts } from '../Context/contacts';
-
 import ContactModel from './ContactModel';
 import ContactButton from './ContactButton';
 import ContactTable from './ContactTable';
 import ContactInfo from './ContactInfo';
 import { useFavourites } from '../Context/favouriteContacts';
-import { useQuery } from '@apollo/client';
-import { LOAD_CONTACTS } from '../GraphQL/Queries/Queries';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import SearchBar from './SearchBar';
 import DeleteModel from './DeleteModal';
@@ -39,12 +33,20 @@ const logo = css`
   margin: 8px 10px 5px 0;
 `;
 
+const headingStyles = css`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+`;
 
 
 
 const ContactMain: React.FC = () => {
     
-  const { loading, data } = useQuery(LOAD_CONTACTS);
+
+  const {data } = useGetContactListQuery();
+
 
     const { contacts, createContacts, updateContact, addContact, removeContact } = useContacts() as ContactsContextType;
     const { regularContacts, addRegularContact, removeRegularContact, createRegularContacts } = useRegularContacts() as regularContactsContextType 
@@ -64,8 +66,7 @@ const ContactMain: React.FC = () => {
 
   useEffect(() => {
       if (data) {
-      
-        createContacts(data.contact);
+        createContacts(data.contact as Contact[]);
     }
   }, [data]);
 
@@ -240,9 +241,10 @@ const ContactMain: React.FC = () => {
         <div css={mainContentBottom} className='main-content-bottom container-fluid p-lg-5 p-3'>
           <div className='row'>
             <div className='col-xl-12 d-flex'>
+              <img src={Logo} css={logo} alt='logo' className='logo' />
               <div className='main-content-header'>
                 <h3>Contacts</h3>
-                <p>Welcome to Phone Book</p>
+                <p>Welcome to Phone Book Application - By Divyansh</p>
               </div>
             </div>
           </div>
@@ -281,8 +283,8 @@ const ContactMain: React.FC = () => {
             </div>
           </div>
           <div className='row p-lg-5 pb-lg-0 pt-lg-0'>
-            <div className='col-lg-7 '> Favourite Contacts </div>
-            <div className='col-lg-7 '>
+            <div className='col-lg-7 '> 
+            <div css={headingStyles}> Favourite Contacts </div>
               <ContactTable
                 contacts={favouriteContacts}
                 filterText={filterText}
@@ -293,9 +295,7 @@ const ContactMain: React.FC = () => {
                 setIsMultiDelete={setIsMultiDelete}
                 setDeleteContactId={setDeleteContactId}
               />
-            </div>
-            <div className='col-lg-7 '> Regular Contacts </div>
-            <div className='col-lg-7 '>
+            <div css={headingStyles}> Regular Contacts </div>
               <ContactTable
                 contacts={regularContacts}
                 filterText={filterText}

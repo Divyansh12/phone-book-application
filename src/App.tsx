@@ -6,14 +6,8 @@ import {
   HttpLink,
   from,
 } from "@apollo/client";
-import { useState } from "react";
-
 import { onError } from "@apollo/client/link/error";
-import GetContacts from "./Components/GetContacts";
-import GetFavourites from "./Components/favouriteContacts";
-import Form from "./Components/CreateContact";
 import FavouriteContactContextProvider from './Context/favouriteContacts';
-import Nav from "./Components/Nav";
 import ContactContextProvider from "./Context/contacts";
 import ContactMain from "./Components/ContactMain";
 import RegularContactContextProvider from "./Context/regularContacts";

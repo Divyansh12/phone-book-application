@@ -23,7 +23,8 @@ const tbody = css`
 `;
 
 const theadTr = css`
-  background-color: #f1f1f1 !important;
+  text-align: center;
+  --bs-table-bg-state: #f1f1f1 !important;
 `;
 
 const tbodyTd = css`
@@ -119,7 +120,7 @@ const ContactTable: React.FC<ContactTableProps> = ({
           <tr css={theadTr}>
             {/* <th className='text-center col-1'>+</th> */}
             <th className='text-secondary col-5'>Name</th>
-            <th className='text-secondary col-5'>Favourite</th>
+            <th className='text-secondary col-5'>Add/Remove Favourite</th>
             <th className='text-center p-1 col-1'></th>
           </tr>
         </thead>

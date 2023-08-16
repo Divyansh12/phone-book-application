@@ -70,6 +70,14 @@ const fullName = css`
   text-overflow: ellipsis;
 `;
 
+const phoneNumer = css`
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #666;
+`;
+
+
 
 
 interface ContactInfoProps {
@@ -108,7 +116,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 700) {
+      if (window.innerWidth <= 991) {
         setShowModal(true);
       } else {
         setShowModal(false);
@@ -162,11 +170,12 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
                   <div className='col-4'>
                     <h6 className=' mb-0 text-secondary'>Phone Numbers</h6>
                   </div>
+                  <div   className='col-8'>
                   {phones.map((val: Phone) => {
-                    return <div className='col-8  '>{val.number}</div>
+                    return <div css={phoneNumer} >{val.number}</div>
                     ;
                 })}
-                  
+                  </div>
                 </div>
                 <hr css={hrStyle} />
 
@@ -248,10 +257,13 @@ const ContactInfo: React.FC<ContactInfoProps> = ({
                   <div className='col-4'>
                     <h6 className=' mb-0 text-secondary'>Phone Numbers</h6>
                   </div>
+
+                  <div   className='col-8'>
                   {phones.map((val: Phone) => {
-                    return <div className='col-8  '>{val.number}</div>
+                    return <div css={phoneNumer}>{val.number}</div>
                     ;
                 })}
+                  </div>
                   
                 </div>
                 <hr css={hrStyle} />

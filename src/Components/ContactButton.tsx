@@ -5,6 +5,7 @@ import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
+const color = 'black';
 const customBtn = css`
   display: flex !important;
   align-items: center;
@@ -20,7 +21,7 @@ const customBtn = css`
   }
 
   &:hover {
-    color: white;
+    color: ${color} !important;
   }
 `;
 

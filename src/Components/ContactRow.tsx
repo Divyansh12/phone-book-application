@@ -20,12 +20,13 @@ const buttonStyles = css`
     // border-radius: 8px;
     // padding: 0.5rem 0.75rem;
     // box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
-    background-color: white;
+    background-color: transparent;
     line-height: 1.5;
     margin: 0;
   
   &:hover {
-    color: #eeb004; /* New color for hover */
+    color: #eeb004 !important;
+    background-color: #e8ecef; /* New color for hover */
   }
 
   &[value="false"] {
@@ -42,9 +43,14 @@ const listAvatar = css`
   height: 50px !important;
   width: 50px !important;
 `;
+const bgcolor='#e8ecef'
 
 const tr = css`
   cursor: pointer;
+
+  &:hover {
+    --bs-table-bg-state: ${bgcolor} !important;
+  }
 `;
 
 const trashIcon = css`
@@ -53,6 +59,13 @@ const trashIcon = css`
   color: #eb675b;
 `;
 
+const fullName = css`
+  margin-left: 2%;
+`;
+
+const justifyContentCenter = css`
+  justify-content: center;
+`;
 
 
 interface ContactRowProps {
@@ -89,7 +102,7 @@ const ContactRow: React.FC<ContactRowProps> = ({
     <tr css={tr} key={contact.id}>
       
       <td onClick={() => showActiveUser(contact.id)}>
-        <div className='contact d-flex'>
+        <div css={fullName} className='contact d-flex'>
           <div className='contact-avatar m-2'>
             <ContactAvatar
               name={contact.first_name + ' ' + contact.last_name}
@@ -97,7 +110,7 @@ const ContactRow: React.FC<ContactRowProps> = ({
               css={listAvatar}
             />
           </div>
-          <div className='contact-info d-flex flex-column justify-content-center m-2'>
+          <div  className='contact-info d-flex flex-column justify-content-center m-2'>
             <div className='contact-info-name truncate-string'>
               <p className='m-0 truncate-string'>
                 {contact.first_name} {contact.last_name}
@@ -108,7 +121,7 @@ const ContactRow: React.FC<ContactRowProps> = ({
         </div>
       </td>
       <td className='align-middle' onClick={() => showActiveUser(contact.id)}>
-        <div className='company-name d-flex align-items-center m-auto'>
+        <div css={justifyContentCenter} className='favourite d-flex align-items-center m-auto'>
             {isFavourite ? (
                     <button css={buttonStyles}
                     onClick={() => removeFromFavourite(contact.id)}
