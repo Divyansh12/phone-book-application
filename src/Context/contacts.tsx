@@ -79,6 +79,12 @@ const ContactContextProvider: React.FC<Props> = ({children}) => {
       }
     })
 
+    favouriteContacts.forEach((contact: Contact)=>{
+      if (!contacts.some(item => item.id === contact.id)) {
+        deleteFavourite(contact.id)
+      }
+    })
+
   }
 
   const removeContact = (contactId: number) =>{
